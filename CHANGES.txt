@@ -1,0 +1,126 @@
+=======
+CHANGES
+=======
+
+1.1.1 (2009-11-22)
+------------------
+
+- Tests updated
+
+
+1.1.0 (2009-08-31)
+------------------
+
+- Replace ' ' with nbsp for plain format
+
+
+1.0.2 (2009-06-23)
+------------------
+
+- Do not use z3c.autoinclude
+
+- Copyright changed to 'Zope Foundation and Contributors'
+
+
+1.0.1 (2009-04-03)
+------------------
+
+- Fixed requierd field validation
+
+- Added comparison (__eq__, __ne__) to RichTextData object
+
+
+1.0.0 (2008-12-31)
+------------------
+
+- Added IRichTextDataModified event
+
+
+0.99.6 (2008-12-12)
+-------------------
+
+- Fixed widget display mode
+
+
+0.99.5 (2008-12-10)
+-------------------
+
+- Fixed richtext data manager
+
+- Set textarea to 15 rows
+
+- Added dutch translation
+
+
+0.99.4 (2008-11-23)
+-------------------
+
+- Added russian translation
+
+- Added buildout for testing against zope3.4
+
+
+0.99.3 (2008-09-22)
+-------------------
+
+- Added __nonzero__ to RichTextData class
+
+- Removed RichTextData.__str__ because of UnicodeEncodeError
+
+
+0.99.2 (2008-09-22)
+-------------------
+
+- Fixed possible bug with zope proxy
+
+
+0.99.1 (2208-09-15)
+-------------------
+
+- Do not use __dict__ in field get/set methods
+
+- Fixed ForbiddenAttribute __dict__
+
+
+0.99.0 (2008-09-11)
+-------------------
+
+- Changed data storage api
+
+- Tests added
+
+
+0.11.0 (2008-09-10)
+-------------------
+
+- Added controlpanel configlet
+
+
+0.10.2 (2008-08-28)
+-------------------
+
+- Added z3c.form 1.9.0 support
+
+
+0.10.1 (2008-08-19)
+-------------------
+
+- Update dependencies
+
+
+0.10 (2008-02-20)
+------------------
+
+- Now package implements widget only for z3c.form library
+
+
+0.9.1 (2008-02-16)
+------------------
+
+- Added 'render' method for field, render text to html
+
+
+0.9 (2008-02-01)
+------------------
+
+- Initial release

@@ -1,0 +1,74 @@
+================
+Rich Text Widget
+================
+
+  >>> from zope import component
+  >>> from zojax.richtext.field import RichText
+  >>> from zojax.richtext.interfaces import IContentEditorConfiglet
+  >>> from zojax.richtext.interfaces import IRichText, IDefaultRichTextWidget
+  >>> from zojax.richtext import widget as widgetMod
+
+  >>> from z3c.form import interfaces
+  >>> from z3c.form.widget import FieldWidget
+  >>> from z3c.form.testing import TestRequest
+  >>> request = TestRequest()
+
+  >>> field = RichText(
+  ...     __name__ = 'data',
+  ...     title = u'Body',
+  ...     required = False)
+
+  >>> widget = FieldWidget(field, widgetMod.DefaultRichTextWidget(request))
+  >>> widget.id = 'widget.id'
+  >>> widget.name = 'widget.name'
+
+
+We also need to register the template for the widget:
+
+  >>> import zope.component
+  >>> from zope.pagetemplate.interfaces import IPageTemplate
+  >>> from z3c.form.testing import getPath
+  >>> from z3c.form.widget import WidgetTemplateFactory
+
+  >>> zope.component.provideAdapter(
+  ...     WidgetTemplateFactory(getPath('textarea_input.pt'), 'text/html'),
+  ...     (None, None, None, None, IDefaultRichTextWidget),
+  ...     IPageTemplate, name=interfaces.INPUT_MODE)
+
+  >>> widget.update()
+  >>> print widget.render()
+  <textarea id="widget.id" name="widget.name"
+            class="widget-richtext richtext-field" rows="15"></textarea>
+  <div class="z-form-field">
+    <label for="data_format"
+           title="If you are unsure of which format to use, just select Plain Text and type the document as you usually do.">Text format</label>
+    <div class="z-form-help">If you are unsure of which format to use, just select Plain Text and type the document as you usually do.</div>
+    <div>
+       <select id="data_format" name="data_format:list"
+          class="select-widget choice-field" size="1">
+         <option id="data_format-novalue" value="--NOVALUE--">no value</option>
+         <option id="data_format-0" value="zope.source.html">HTML</option>
+         <option id="data_format-1" value="zope.source.plaintext"
+                 selected="selected">Plain Text</option>
+         <option id="data_format-2" value="zope.source.rest">ReStructured Text (ReST)</option>
+         <option id="data_format-3" value="zope.source.stx">Structured Text (STX)</option>
+       </select>
+       <input name="data_format-empty-marker" type="hidden"
+         value="1" />
+    </div>
+  </div>  
+
+
+Empty widget
+
+  >>> widget.request = TestRequest()
+  >>> widget.update()
+  >>> widget.extract()
+  <NO_VALUE>
+
+Value data
+
+  >>> widget.request = TestRequest(form={'widget.name': u'test'})
+  >>> widget.update()
+  >>> widget.extract()
+  <zojax.richtext.field.RichTextData object at ...>

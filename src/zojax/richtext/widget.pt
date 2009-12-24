@@ -1,0 +1,19 @@
+<div class="z-form-field"
+     tal:define="widget view/format_widget;
+		 error widget/error|nothing"
+     tal:attributes="class python:error and 'z-form-field error' or 'z-form-field'">
+  <label for="field.name" title="The widget's hint"
+	 tal:attributes="for widget/name;
+			 title widget/field/description"
+	 tal:content="widget/label">The Label</label>
+  
+  <span class="z-form-fieldRequired" tal:condition="widget/required">&nbsp;</span>
+  
+  <div tal:condition="error" tal:replace="structure error/render">
+    The Error
+  </div>
+  <div class="z-form-help" tal:content="structure widget/field/description"></div>
+  <div tal:content="structure widget/render">
+    <input type="text" style="width:100%"/>
+  </div>
+</div>

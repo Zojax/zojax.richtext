@@ -1,0 +1,117 @@
+# #############################################################################
+#
+# Copyright (c) 2009 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: Development/Unknown\n"
+"POT-Creation-Date: Mon Nov 24 17:30:36 2008\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nikolay Kim <fafhrd91@gmail.com>\n"
+"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+
+#: src/zojax/richtext/configure.zcml:51
+msgid "Default member's content editor configuration."
+msgstr ""
+
+#: src/zojax/richtext/configure.zcml:51
+msgid "Content Editor"
+msgstr "Редактор текстов"
+
+#: src/zojax/richtext/configure.zcml:59
+msgid "Select the content editor that you would like to use."
+msgstr ""
+"Выберите редактор, который вы бы хотели использовать для редактирования "
+"текстов."
+
+#: src/zojax/richtext/html.py:25 src/zojax/richtext/htmlsource.py:30
+msgid "HTML"
+msgstr ""
+
+#: src/zojax/richtext/html.py:26 src/zojax/richtext/htmlsource.py:30
+msgid "HTML Source"
+msgstr ""
+
+#: src/zojax/richtext/interfaces.py:110
+msgid ""
+"Select the content editor that you would like to use. Note that content "
+"editors often have specific browser requirements."
+msgstr ""
+"Выберите редактор, который вы бы хотели использовать для редактирования "
+"текстов. Редакторы содержимого часто имеют специфические требования к "
+"браузеру."
+
+#: src/zojax/richtext/interfaces.py:88
+msgid "Allow change editor"
+msgstr "Позволить выбирать редактор"
+
+#: src/zojax/richtext/interfaces.py:89
+msgid "Allow change editor for members."
+msgstr "Позволить пользователям выбирать редактор."
+
+#: src/zojax/richtext/interfaces.py:94 src/zojax/richtext/interfaces.py:109
+#: src/zojax/richtext/configure.zcml:59
+msgid "Content editor"
+msgstr "Редактор текстов"
+
+#: src/zojax/richtext/interfaces.py:95
+msgid ""
+"Select the content editor that members will use. Note that content editors "
+"often have specific browser requirements."
+msgstr ""
+"Выберите редактор, который пользователи будут использовать для "
+"редактирования текстов. Редакторы содержимого часто имеют специфические "
+"требования к браузеру."
+
+#: src/zojax/richtext/plaintext.py:26
+msgid "Plain Text"
+msgstr "Обычный текст"
+
+#: src/zojax/richtext/plaintext.py:27
+msgid "Plain Text Source"
+msgstr "Исходный текст в виде обычного текста"
+
+#: src/zojax/richtext/rest.py:37
+msgid "ReStructured Text (ReST)"
+msgstr "Реструктурированный текст (ReST)"
+
+#: src/zojax/richtext/rest.py:39
+msgid "ReStructured Text (ReST) Source"
+msgstr "Исходный текст в виде реструктурированного текста (ReST)"
+
+#: src/zojax/richtext/stx.py:30
+msgid "Structured Text (STX)"
+msgstr "Структурированный текст (STX)"
+
+#: src/zojax/richtext/stx.py:31
+msgid "Structured Text (STX) Source"
+msgstr "Исходный текст в виде структурированного текста (STX)"
+
+#: src/zojax/richtext/widget.py:164
+msgid "Basic HTML textarea editor"
+msgstr "Стандартный 'HTML TextArea' редактор"
+
+#: src/zojax/richtext/widget.py:60
+msgid "Text format"
+msgstr "Формат текста"
+
+#: src/zojax/richtext/widget.py:61
+msgid ""
+"If you are unsure of which format to use, just select Plain Text and type "
+"the document as you usually do."
+msgstr ""
+"Если вы не уверены, какой формат использовать - выберите 'Обычный текст' и "
+"печатайте документ как обычно"

@@ -1,0 +1,98 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   xmlns:z3c="http://namespaces.zope.org/z3c"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zojax.richtext">
+
+  <!-- rich text data -->
+  <class class=".field.RichTextData">
+    <require
+       permission="zope.Public"
+       interface=".interfaces.IRichTextData" />
+  </class>
+
+  <!-- widget -->
+  <adapter factory=".widget.RichTextFieldWidget" />
+
+  <!-- default widget -->
+  <utility
+     name="default"
+     factory=".widget.DefaultWidgetFactory" />
+
+  <adapter factory=".widget.DefaultDataManager" />
+  <adapter factory=".widget.DefaultDataConverter" />
+
+  <z3c:widgetTemplate
+     mode="display"
+     widget=".interfaces.IDefaultRichTextWidget"
+     layer="z3c.form.interfaces.IFormLayer"
+     template="widget_display.pt" />
+
+  <z3c:widgetTemplate
+     mode="input"
+     widget=".interfaces.IDefaultRichTextWidget"
+     layer="z3c.form.interfaces.IFormLayer"
+     template="widget_input.pt" />
+
+  <!-- vocabularies -->
+  <utility
+     name="zojax.richtext-widgets"
+     factory=".vocabulary.WysiwygWidgets" />
+
+  <utility
+     name="zojax.richtext-renderers"
+     factory=".vocabulary.Renderers" />
+
+  <!-- configlet -->
+  <zojax:configlet
+     name="system.contenteditor"
+     title="Content Editor"
+     description="Default member's content editor configuration."
+     schema=".interfaces.IContentEditorConfiglet"
+     class=".configlet.ContentEditorConfiglet" />
+
+  <!-- preference group -->
+  <zojax:preferenceGroup
+     id="portal.contenteditor"
+     schema=".interfaces.IContentEditorPreference"
+     title="Content editor" 
+     description="Select the content editor that you would like to use." 
+     tests="zojax.preferences.utils.isUser
+	    .configlet.SelectionAllowed" />
+
+  <!-- plain -->
+  <utility
+     name="zope.source.plaintext"
+     factory=".plaintext.PlainTextRenderer" />
+
+  <!-- html -->
+  <utility
+     name="zope.source.html"
+     factory=".html.HTMLRenderer" />
+
+  <!-- rest -->
+  <utility
+     name="zope.source.rest"
+     factory=".rest.ReStructuredTextRenderer" />
+
+  <!-- stx -->
+  <utility
+     name="zope.source.stx"
+     factory=".stx.StructuredTextRenderer" />
+
+  <!-- html renderer -->
+  <utility
+     name="zope.source.html"
+     component=".htmlsource.HTMLSourceFactory" />
+
+  <browser:view
+     for=".htmlsource.IHTMLSource"
+     class=".htmlsource.HTMLToHTMLRenderer"
+     permission="zope.Public" />
+
+  <!-- translations -->
+  <i18n:registerTranslations directory="locales"/>
+
+</configure>
