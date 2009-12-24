@@ -1,0 +1,165 @@
+==============
+RichText Field
+==============
+
+  >>> from zojax.richtext.field import RichText, RichTextData
+
+
+RichText Field Validation
+-------------------------
+
+  >>> field = RichText()
+
+Let's first check the basic validation. First of all we can assign
+only IRichTextData or unicode instances
+
+  >>> field.validate(object())
+  Traceback (most recent call last):
+  ...
+  WrongType: (<object object at ...>, <InterfaceClass zojax.richtext.interfaces.IRichTextData>)
+
+  >>> field.validate('test')
+  Traceback (most recent call last):
+  ...
+  WrongType: ('test', <InterfaceClass zojax.richtext.interfaces.IRichTextData>)
+
+  >>> field.validate(u'test')
+  >>> field.validate(RichTextData(u'test'))
+
+
+get/set field value
+-------------------
+
+  >>> from zope import interface, schema
+  >>> from zojax.richtext.field import RichTextProperty
+
+  >>> class IPageContent(interface.Interface):
+  ...     
+  ...     title = schema.TextLine(
+  ...         title = u'Title',
+  ...         required = True)
+  ...     data = RichText(
+  ...         title = u'Data',
+  ...         required = True)
+  ...     data2 = RichText(
+  ...         title = u'Data',
+  ...         required = True,
+  ...         readonly = True)
+
+
+  >>> from persistent import Persistent
+
+  >>> class PageContent(Persistent):
+  ...     
+  ...     data = RichTextProperty(IPageContent['data'])
+  ...     data2 = RichTextProperty(IPageContent['data2'])
+
+
+  >>> pageContent = PageContent()
+
+get
+---
+
+  >>> pageContent.data is None
+  True
+
+  >>> pageContent.data = 'test'
+  Traceback (most recent call last):
+  ...
+  WrongType: ('test', <InterfaceClass zojax.richtext.interfaces.IRichTextData>)
+
+  >>> pageContent.data = RichTextData('test')
+  >>> pageContent.data.format
+  u'zope.source.plaintext'
+  >>> pageContent.data.text
+  u'test'
+
+if field value if not IRichTextData this value automaticly converts
+
+  >>> pageContent.__dict__['data'] = 'test'
+  >>> pageContent.__dict__['data']
+  'test'
+  >>> pageContent.data
+  <zojax.richtext.field.RichTextData object at ...>
+  >>> pageContent.__dict__['data']
+  <zojax.richtext.field.RichTextData object at ...>
+
+  >>> pageContent.data.text
+  u'test'
+
+Convert from old format
+
+  >>> pageContent.__dict__['data'] = ['test page', u'zope.source.html']
+  >>> pageContent.data
+  <zojax.richtext.field.RichTextData object at ...>
+  >>> pageContent.data.text
+  u'test page'
+  >>> pageContent.data.format
+  u'zope.source.html'
+
+
+set
+---
+
+  >>> pageContent.data = RichTextData('test')
+  
+  >>> pageContent.data2 = RichTextData('test')
+  Traceback (most recent call last):
+  ...
+  TypeError: Can't set values on read-only fields ...
+
+  >>> pageContent.data = u'Test data'
+  >>> pageContent.data.text
+  u'Test data'
+
+  >>> pageContent.data = RichTextData('test', 'zope.source.rest')
+  >>> pageContent.data.text
+  u'test'
+
+  >>> pageContent.data = RichTextData('test', 'zope.source.stx')
+  >>> pageContent.data.text
+  u'test'
+
+
+clear
+-----
+
+  >>> pageContent.data.clear()
+  >>> pageContent.data.text
+  u''
+  >>> pageContent.data.format
+  u''
+  >>> pageContent.data.cooked is None
+  True
+
+
+cooked
+------
+
+  >>> pageContent.data = u'test'
+
+  >>> pageContent.data.cooked
+  u'test'
+
+  >>> str(pageContent.data)
+  '<zojax.richtext.field.RichTextData ...>'
+
+
+just tests
+----------
+
+  >>> bool(pageContent.data)
+  True
+
+  >>> pageContent.data = u''
+  >>> bool(pageContent.data)
+  False
+
+  >>> from zope import component
+  >>> from zope.schema.interfaces import IVocabularyFactory
+
+  >>> vocFactory = component.getUtility(
+  ...     IVocabularyFactory, 'zojax.richtext-widgets')
+  >>> for term in vocFactory(None):
+  ...     print '"%s" "%s"'%(term.value, term.title)
+  "default" "Basic HTML textarea editor"
