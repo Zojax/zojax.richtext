@@ -91,7 +91,7 @@ class RichTextData(Persistent):
 
     def __init__(self, text=u'', format=u'zope.source.plaintext'):
         self.format = format
-        self.text = unicode(text)
+        self.text = unicode(text, 'utf-8')
 
     def clear(self):
         self.format = u''
