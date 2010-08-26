@@ -91,7 +91,10 @@ class RichTextData(Persistent):
 
     def __init__(self, text=u'', format=u'zope.source.plaintext'):
         self.format = format
-        self.text = unicode(text, 'utf-8')
+        try:
+            self.text = unicode(text)
+        except UnicodeDecodeError:
+            self.text = unicode(text, 'utf-8')
 
     def clear(self):
         self.format = u''
