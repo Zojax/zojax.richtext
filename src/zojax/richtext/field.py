@@ -94,7 +94,7 @@ class RichTextData(Persistent):
         try:
             self.text = unicode(text)
         except UnicodeDecodeError:
-            self.text = unicode(text, 'utf-8')
+            self.text = unicode(text, 'utf-8', 'ignore')
 
     def clear(self):
         self.format = u''
