@@ -1,4 +1,3 @@
-##############################################################################
 #
 # Copyright (c) 2009 Zope Foundation and Contributors.
 # All Rights Reserved.
@@ -11,13 +10,19 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+import re
+from zope.security.management import queryInteraction
+from zope.annotation.interfaces import IAnnotations
+from zope.cachedescriptors.property import CachedProperty
+from zope.app.intid.interfaces import IIntIds
+from zope.traversing.browser.absoluteurl import absoluteURL
 """ RichText field
 
 $Id$
 """
 from rwproperty import getproperty, setproperty
 
-from zope import schema, interface, event
+from zope import schema, interface, event, component
 from persistent import Persistent
 from persistent.interfaces import IPersistent
 from zope.schema.interfaces import WrongType, RequiredMissing
@@ -27,6 +32,17 @@ from zope.component import getUtility, queryUtility
 from zope.component.interfaces import ObjectEvent
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from interfaces import IRenderer, IRichText, IRichTextData, IRichTextDataModified
+
+
+SUB = re.compile('@@content\.byid/(\d+)')
+
+
+def getRequest():
+    interaction = queryInteraction()
+
+    if interaction is not None:
+        for participation in interaction.participations:
+            return participation
 
 
 class RichText(schema.MinMaxLen, schema.Field):
@@ -87,8 +103,6 @@ class RichText(schema.MinMaxLen, schema.Field):
 class RichTextData(Persistent):
     interface.implements(IRichTextData)
 
-    cooked = u''
-
     def __init__(self, text=u'', format=u'zope.source.plaintext'):
         self.format = format
         try:
@@ -105,7 +119,6 @@ class RichTextData(Persistent):
         renderer = queryUtility(IRenderer, name=self.format)
         if renderer is None:
             renderer = getUtility(IRenderer, name=u"zope.source.plaintext")
-
         return renderer.render(self.text)
 
     @getproperty
@@ -117,6 +130,31 @@ class RichTextData(Persistent):
         self.__dict__['text'] = value
         self.cooked = self.render()
         self._p_changed = True
+
+    @getproperty
+    def cooked(self):
+        v = self.__dict__.get('cooked', u'')
+        if v is None:
+            return
+        return SUB.sub(self.getObjectUrl, v)
+
+    def getObjectUrl(self, uid):
+        id = uid.group(1)
+        try:
+            request = getRequest()
+            if request is None:
+                raise ValueError()
+            return absoluteURL(self.ids.getObject(int(id)), request)
+        except (TypeError, ValueError, KeyError), e:
+            return '@@content.byid/'+id
+
+    @setproperty
+    def cooked(self, value):
+        self.__dict__['cooked'] = value
+        
+    @CachedProperty
+    def ids(self):
+        return component.getUtility(IIntIds)
 
     def __len__(self):
         return len(self.text)

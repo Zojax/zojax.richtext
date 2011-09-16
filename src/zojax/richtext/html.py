@@ -15,15 +15,30 @@
 
 $Id$
 """
-from zope import interface
-from interfaces import _, IRenderer
+from zope import interface, component, cachedescriptors
+from zope.app.intid.interfaces import IIntIds
 
+from interfaces import _, IRenderer
+import re
+
+SUB = re.compile('@@content\.browser/(\n+)')
 
 class HTMLRenderer(object):
     interface.implements(IRenderer)
 
     title = _("HTML")
     description = _("HTML Source")
+    
+    @cachedescriptors.property.CachedProperty
+    def ids(self):
+        return component.getUtility(IIntIds)
 
     def render(self, text):
-        return text
+        return SUB.sub(self.getObjectUrl, text)
+    
+    def getObjectUrl(self, uid):
+        id = uid.group(1)
+        try:
+            return absoluteURL(self.ids.getObject(int(id)))
+        except (TypeError, ValueError, KeyError), e:
+            return '@@content.browser/'+id
